@@ -9,5 +9,5 @@ traefik:
 
   # Enable Kubernetes Ingress provider
   providers:
-    kubernetesingress:
+    kubernetesIngress:
       enabled: true
