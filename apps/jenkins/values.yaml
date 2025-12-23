@@ -58,20 +58,19 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
+  className: "traefik"
+  annotations:
+    kubernetes.io/ingress.class: traefik
   hosts:
-    - host: chart-example.local
+    - host: jenkins.gerenciarhotel.com.br
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
   tls: []
-  #  - secretName: chart-example-tls
+  #  - secretName: jenkins-tls
   #    hosts:
-  #      - chart-example.local
+  #      - jenkins.gerenciarhotel.com.br
 
 # -- Expose the service via gateway-api HTTPRoute
 # Requires Gateway API resources and suitable controller installed within the cluster
@@ -83,18 +82,18 @@ httpRoute:
   annotations: {}
   # Which Gateways this Route is attached to.
   parentRefs:
-  - name: gateway
-    sectionName: http
-    # namespace: default
+    - name: gateway
+      sectionName: http
+      # namespace: default
   # Hostnames matching HTTP header.
   hostnames:
-  - chart-example.local
+    - chart-example.local
   # List of rules and filters applied.
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /headers
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /headers
   #   filters:
   #   - type: RequestHeaderModifier
   #     requestHeaderModifier:
